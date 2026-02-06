@@ -1,0 +1,5 @@
+data/
+lightning_logs/
+logs/
+.DS_Store
+SSL_data_prep.txt
