@@ -156,7 +156,11 @@ def calculate_stats_parallel(dataset, n_samples=None, batch_size=16, num_workers
                 # f"≈ {batch_idx * b}/{n_samples} samples")
 
     mean = channel_sum / num_pixels
-    std  = torch.sqrt(channel_sum_sq / num_pixels - mean**2)
+    # std  = torch.sqrt(channel_sum_sq / num_pixels - mean**2)
+    variance = channel_sum_sq / num_pixels - mean**2
+    variance = torch.clamp(variance, min=0)  # Avoid negative values
+    # Add small epsilon to avoid sqrt(0) issues
+    std = torch.sqrt(variance + 1e-8)
     return mean, std
 
 def main(data_root_dir, n_samples,  batch_size, patch_size,num_workers):
