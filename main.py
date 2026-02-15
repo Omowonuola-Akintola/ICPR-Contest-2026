@@ -5,6 +5,7 @@
 # source rabina_venv/bin/activate
 # uv init
 # uv add torchgeo lightning prettytable
+# uv run main.py --data_root_dir /home/krschap/rabina/data/s2a
 
 import torch
 torch.cuda.empty_cache()
@@ -156,6 +157,7 @@ def calculate_stats_parallel(dataset, n_samples=None, batch_size=16, num_workers
                 # f"≈ {batch_idx * b}/{n_samples} samples")
 
     mean = channel_sum / num_pixels
+    torch.set_printoptions(sci_mode=False, precision=4)
     # std  = torch.sqrt(channel_sum_sq / num_pixels - mean**2)
     variance = channel_sum_sq / num_pixels - mean**2
     variance = torch.clamp(variance, min=0)  # Avoid negative values
