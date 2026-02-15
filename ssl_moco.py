@@ -34,6 +34,7 @@ import kornia.augmentation as K
 from dataclasses import dataclass
 from torchgeo.trainers.moco import MoCoTask
 from torchgeo.models.resnet import ResNet50_Weights
+from typing import Optional
 # ========================
 # GPU & CPU setup
 # ========================
@@ -83,6 +84,7 @@ class TrainingConfig:
     target_size: int = 224
     max_epochs: int = 100
     batch_size: int =32
+    ckpt_path: Optional[str] = None
     #devices = []
 
 class SSLDataset(Dataset):
@@ -340,7 +342,8 @@ def main(data_cfg, training_cfg):
       filename="ssl-best-{epoch:02d}",
       monitor="train_loss",
       mode="min",
-      save_top_k=1
+      save_top_k=1,
+      save_last=True
     )
 
 
@@ -356,7 +359,7 @@ def main(data_cfg, training_cfg):
         logger=logger)
     
     start_time=time.time()
-    trainer.fit(task, data_loader)
+    trainer.fit(task, data_loader, ckpt_path=training_cfg.ckpt_path)
     end_time=time.time()
     print(f"Training time: {(end_time-start_time)/60} min")
 
@@ -413,7 +416,7 @@ if __name__ == "__main__":
     )
 
     training_cfg = TrainingConfig(
-        experiment_out_dir=f"output/ssl_v1_e20_b96_mem_16k",
+        experiment_out_dir=f"output/ssl_v1_e20_50_b96_mem_16k",
         model="resnet50",
         # weights= ResNet50_Weights.SENTINEL2_ALL_MOCO,
         in_channels=13,
@@ -424,7 +427,8 @@ if __name__ == "__main__":
         memory_bank_size=16000, #4096, #2048
         target_size=224,
         batch_size=96,
-        max_epochs=20,
+        max_epochs=50,
+        ckpt_path="/home/krschap/rabina/ICPR-Contest-2026/output/ssl_v1_e20_b96_mem_16k/ssl_ckpt_20260215_042511.ckpt"
         #devices=[0]
     )
     main(data_cfg, training_cfg)
