@@ -1,0 +1,21 @@
+Data folder : /home/krschap/rabina/data/s2a
+Using device: cpu
+CPU cores available: 32
+CPU cores using: 24
+Found 32567 scenes in 0.06 seconds
+Total samples in dataset: 166775
+Calculating stats on the entire dataset...
+Total batches to process: 2606
+Processed batch 500/2606 
+Processed batch 1000/2606 
+Processed batch 1500/2606 
+Processed batch 2000/2606 
+Processed batch 2500/2606 
+Processed batch 2606/2606 
+calculate_stats time: 3.08 min
+Mean: tensor([1278.6852, 1434.4397, 1694.8578, 1932.4095, 2269.2026, 2789.2571,
+        3019.3687, 3144.4609, 3180.2004, 3289.7437,    0.0000, 2666.2808,
+        2098.4189])
+Std: tensor([2.1488e+03, 2.1489e+03, 2.0382e+03, 2.0972e+03, 2.0665e+03, 1.8903e+03,
+        1.8426e+03, 1.8982e+03, 1.7629e+03, 1.9929e+03, 1.0000e-04, 1.2480e+03,
+        1.1322e+03])
