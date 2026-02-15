@@ -83,7 +83,8 @@ class TrainingConfig:
     target_size: int = 224
     max_epochs: int = 100
     batch_size: int =32
-    devices = []
+    #devices = []
+
 class SSLDataset(Dataset):
     def __init__(self, scenes, bands, transforms=None, patch_size=264):
         """
@@ -332,14 +333,26 @@ def main(data_cfg, training_cfg):
     # Example usage for your task
     summary_trainable(task)
 
+    from lightning.pytorch.callbacks import ModelCheckpoint
+
+    checkpoint_callback = ModelCheckpoint(
+      dirpath=training_cfg.experiment_out_dir,
+      filename="ssl-best-{epoch:02d}",
+      monitor="train_loss",
+      mode="min",
+      save_top_k=1
+    )
+
+
     trainer = Trainer(
         max_epochs=training_cfg.max_epochs,
         enable_progress_bar=True, 
         log_every_n_steps=num_batches,
         precision=16,
         accelerator="gpu" if torch.cuda.is_available() else "cpu",
-        devices = training_cfg.devices,
+        devices = [0], # training_cfg.devices,
 	deterministic=True,
+        callbacks=[checkpoint_callback],
         logger=logger)
     
     start_time=time.time()
@@ -412,7 +425,7 @@ if __name__ == "__main__":
         target_size=224,
         batch_size=96,
         max_epochs=20,
-        devices=[0]
+        #devices=[0]
     )
     main(data_cfg, training_cfg)
 
