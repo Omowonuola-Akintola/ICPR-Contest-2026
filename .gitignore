@@ -8,3 +8,4 @@ SSL_data_prep.txt
 __pycache__/
 *.pyc
 .env
+output/

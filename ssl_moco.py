@@ -28,12 +28,12 @@ from rasterio.enums import Resampling
 from prettytable import PrettyTable
 from lightning.pytorch.loggers import CSVLogger
 from torchvision import transforms
-from torchvision.models import ResNet50_Weights
-from moco import MoCoTask
+#from torchvision.models import ResNet50_Weights
 from lightning.pytorch import Trainer
 import kornia.augmentation as K
 from dataclasses import dataclass
-
+from torchgeo.trainers.moco import MoCoTask
+from torchgeo.models.resnet import ResNet50_Weights
 # ========================
 # GPU & CPU setup
 # ========================
@@ -73,7 +73,7 @@ class DataConfig:
 class TrainingConfig:
     experiment_out_dir: str = "ssl_moco_"
     model: str = "resnet50"
-    weights: ResNet50_Weights = ResNet50_Weights.SENTINEL2_ALL_MOCO
+    #weights: ResNet50_Weights = ResNet50_Weights.SENTINEL2_ALL_MOCO
     in_channels: int = 13
     version: int = 2
     lr: float = 1e-4
@@ -82,7 +82,8 @@ class TrainingConfig:
     memory_bank_size: int = 2048
     target_size: int = 224
     max_epochs: int = 100
-
+    batch_size: int =32
+    devices = []
 class SSLDataset(Dataset):
     def __init__(self, scenes, bands, transforms=None, patch_size=264):
         """
@@ -221,7 +222,8 @@ def main(data_cfg, training_cfg):
     print("========================")
     print("Training config:", training_cfg)
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    logger = CSVLogger("logs", name=f"{training_cfg.experiment_name}_metrics_{timestamp}")
+    os.makedirs(training_cfg.experiment_out_dir, exist_ok=True)
+    logger = CSVLogger("logs", name=f"{training_cfg.experiment_out_dir}/metrics_{timestamp}")
 
     aug = K.AugmentationSequential(
         K.RandomResizedCrop(size=(training_cfg.target_size, training_cfg.target_size), scale=(0.4, 1.0)),
@@ -234,18 +236,19 @@ def main(data_cfg, training_cfg):
 
     if not os.path.exists(data_cfg.data_root_dir):
         raise FileNotFoundError(f"Data root directory does not exist: {data_cfg.data_root_dir}")
-
+    scenes = sorted(glob.glob(os.path.join(data_cfg.data_root_dir, "*/")))
+    bands = ["B1","B2","B3","B4","B5","B6","B7","B8","B8A","B9","B11","B12"]
     # ========================
     # Compute dataset statistics (mean, std)
     # ========================
     if data_cfg.compute_stats:
         start_time = time.time()
-        scenes = sorted(glob.glob(os.path.join(data_cfg.data_root_dir, "*/")))
+        #scenes = sorted(glob.glob(os.path.join(data_cfg.data_root_dir, "*/")))
         end_time = time.time()
 
         print(f"Found {len(scenes)} scenes in {end_time-start_time:.2f} seconds")
 
-        bands = ["B1","B2","B3","B4","B5","B6","B7","B8","B8A","B9","B11","B12"]
+        # bands = ["B1","B2","B3","B4","B5","B6","B7","B8","B8A","B9","B11","B12"]
         temp_dataset = SSLDataset(scenes, bands, patch_size=data_cfg.patch_size)
         start_time = time.time()
         # mean, std = calculate_stats(temp_dataset, n_samples=10000)
@@ -274,7 +277,7 @@ def main(data_cfg, training_cfg):
         transforms.Normalize(mean=mean, std=std)
     ])
         
-    dataset = SSLDataset(scenes, bands, transforms=transform)
+    dataset = SSLDataset(scenes, bands, transforms=transform, patch_size=training_cfg.target_size)
     print(len(dataset))
     print(dataset[0]['image'].shape)
 
@@ -333,9 +336,10 @@ def main(data_cfg, training_cfg):
         max_epochs=training_cfg.max_epochs,
         enable_progress_bar=True, 
         log_every_n_steps=num_batches,
-        precision=32,
+        precision=16,
         accelerator="gpu" if torch.cuda.is_available() else "cpu",
-        deterministic=True,
+        devices = training_cfg.devices,
+	deterministic=True,
         logger=logger)
     
     start_time=time.time()
@@ -343,9 +347,9 @@ def main(data_cfg, training_cfg):
     end_time=time.time()
     print(f"Training time: {(end_time-start_time)/60} min")
 
-    torch.save(task.backbone.state_dict(),f"{training_cfg.experiment_out_dir}_ssl_backbone_{timestamp}.pth")
-    torch.save(task.projection_head.state_dict(), f"{training_cfg.experiment_out_dir}_projection_head_{timestamp}.pth")
-    trainer.save_checkpoint(f"{training_cfg.experiment_out_dir}_ssl_ckpt_{timestamp}.ckpt")
+    torch.save(task.backbone.state_dict(),f"{training_cfg.experiment_out_dir}/ssl_backbone_{timestamp}.pth")
+    torch.save(task.projection_head.state_dict(), f"{training_cfg.experiment_out_dir}/projection_head_{timestamp}.pth")
+    trainer.save_checkpoint(f"{training_cfg.experiment_out_dir}/ssl_ckpt_{timestamp}.ckpt")
 
 
 if __name__ == "__main__":
@@ -396,18 +400,19 @@ if __name__ == "__main__":
     )
 
     training_cfg = TrainingConfig(
-        experiment_out_dir=f"ssl_moco_{timestamp}",
+        experiment_out_dir=f"output/ssl_v1_e20_b96_mem_16k",
         model="resnet50",
-        weights= ResNet50_Weights.SENTINEL2_ALL_MOCO,
+        # weights= ResNet50_Weights.SENTINEL2_ALL_MOCO,
         in_channels=13,
         version=2,
         lr=1e-4,
         use_peft=False,
         temperature=0.15,
-        memory_bank_size=8000, #4096, #2048
+        memory_bank_size=16000, #4096, #2048
         target_size=224,
-        batch_size=64,
-        max_epochs=100
+        batch_size=96,
+        max_epochs=20,
+        devices=[0]
     )
     main(data_cfg, training_cfg)
 
