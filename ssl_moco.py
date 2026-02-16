@@ -5,7 +5,7 @@
 # source rabina_venv/bin/activate
 # uv init
 # uv add torchgeo lightning prettytable
-# uv run main.py --data_root_dir /home/krschap/rabina/data/s2a
+# uv run ssl_moco.py --data_root_dir /home/krschap/rabina/data/s2a
 
 import torch
 torch.cuda.empty_cache()
@@ -346,21 +346,22 @@ def main(data_cfg, training_cfg):
       save_last=True
     )
 
-
     trainer = Trainer(
         max_epochs=training_cfg.max_epochs,
         enable_progress_bar=True, 
         log_every_n_steps=num_batches,
         precision=16,
-        accelerator="gpu" if torch.cuda.is_available() else "cpu",
-        devices = [0], # training_cfg.devices,
+        accelerator="gpu", # if torch.cuda.is_available() else "cpu",
+        #devices = [0], # training_cfg.devices,
 	deterministic=True,
         callbacks=[checkpoint_callback],
         logger=logger)
     
+    print("USING DEVICE CONFIRMATION", next(task.parameters()).device)
     start_time=time.time()
     trainer.fit(task, data_loader, ckpt_path=training_cfg.ckpt_path)
     end_time=time.time()
+    print("After fit device:", next(task.parameters()).device)
     print(f"Training time: {(end_time-start_time)/60} min")
 
     torch.save(task.backbone.state_dict(),f"{training_cfg.experiment_out_dir}/ssl_backbone_{timestamp}.pth")
@@ -416,7 +417,7 @@ if __name__ == "__main__":
     )
 
     training_cfg = TrainingConfig(
-        experiment_out_dir=f"output/ssl_v1_e20_50_b96_mem_16k",
+        experiment_out_dir=f"output/ssl_v2_e50_100_b96_mem_16k",
         model="resnet50",
         # weights= ResNet50_Weights.SENTINEL2_ALL_MOCO,
         in_channels=13,
@@ -427,8 +428,9 @@ if __name__ == "__main__":
         memory_bank_size=16000, #4096, #2048
         target_size=224,
         batch_size=96,
-        max_epochs=50,
-        ckpt_path="/home/krschap/rabina/ICPR-Contest-2026/output/ssl_v1_e20_b96_mem_16k/ssl_ckpt_20260215_042511.ckpt"
+        max_epochs=100,
+        #ckpt_path="/home/krschap/rabina/ICPR-Contest-2026/output/ssl_v1_e20_b96_mem_16k/ssl_ckpt_20260215_042511.ckpt",
+        ckpt_path = "/home/krschap/rabina/ICPR-Contest-2026/output/ssl_v1_e20_50_b96_mem_16k/ssl_ckpt_20260215_104921.ckpt"
         #devices=[0]
     )
     main(data_cfg, training_cfg)
