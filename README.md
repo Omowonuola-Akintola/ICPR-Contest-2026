@@ -1,5 +1,10 @@
 # ICPR-Contest-2026  
-This repository contains the code and output for the ICPR Contest 2026 competition focused on crop disease classification using Sentinel-2 satellite imagery. The project explores multiple approaches including self-supervised learning with MoCo and the foundation model Prithvi.
+
+*Competition: Beyond Visible Spectrum: AI for Agriculture 2026*  
+*Task 2: Boosting automatic crop diseases classification using Sentinel satellite data and self-supervised learning (SSL)*  
+
+This repository contains the code and output for the ICPR Contest 2026 competition focused on crop disease classification using Sentinel-2 satellite imagery. The project explores multiple approaches including self-supervised learning with MoCo and the foundation model Prithvi.  
+
 
 ## Overview  
 This project tackles the challenge of automatic crop disease classification using Sentinel-2 multispectral satellite data. We employ advanced deep learning techniques including:  
@@ -70,8 +75,3 @@ Best Model Performance:
 
 ## Acknowledgments 
 ICPR Contest 2026 organizers for the dataset
-
----
-
-**Competition:** Beyond Visible Spectrum: AI for Agriculture 2026 
-**Task 2:** Boosting automatic crop diseases classification using Sentinel satellite data and self-supervised learning (SSL)
