@@ -1,77 +1,75 @@
 # ICPR-Contest-2026  
 
-*Competition: Beyond Visible Spectrum: AI for Agriculture 2026*  
-*Task 2: Boosting automatic crop diseases classification using Sentinel satellite data and self-supervised learning (SSL)*  
+**Background**  
+Competition: *Beyond Visible Spectrum: AI for Agriculture 2026*
+Task: *Boosting automatic crop disease classification using Sentinel-2 satellite imagery and self-supervised learning (SSL).*  
 
-This repository contains the code and output for the ICPR Contest 2026 competition focused on crop disease classification using Sentinel-2 satellite imagery. The project explores multiple approaches including self-supervised learning with MoCo and the foundation model Prithvi.  
+This project focuses on automatic crop disease classification from multispectral Sentinel-2 data. The challenge is to extract meaningful features from limited labeled data, using unlabeled satellite imagery using self-supervised learning, and evaluating downstream classification performance.
 
+**Objectives**   
 
-## Overview  
-This project tackles the challenge of automatic crop disease classification using Sentinel-2 multispectral satellite data. We employ advanced deep learning techniques including:  
-- **Self-Supervised Learning (SSL)** with MoCo v2 for representation learning
-- **Foundation Models** leveraging Prithvi geospatial vision transformers
-- **Transfer Learning** using pre-trained encoders
+The main goal of this project is to improve crop disease classification accuracy by combining self-supervised pre-training and downstream supervised classification:  
+- Self-Supervised Learning (SSL): Pre-train feature representations from unlabeled Sentinel-2 images using a SSL model.
+- Downstream Classification: Fine-tune SSL-pretrained encoders on the labeled crop disease dataset.
 
-## Dataset  
-- **Source** https://www.kaggle.com/competitions/beyond-visible-spectrum-ai-for-agriculture-2026p2/data 
-- **Unlabeled Data**
-  - **Bands:** 12 Sentinel-2 bands (B1-B9, B8A, B11, B12) 
-- **Labeled Data:**
-  - **Num of samples:** 900 images
-  - **Classes:** Aphid, Blast, RPH, Rust
-  - **Bands:** 12 Sentinel-2 bands (B1-B9, B8A, B11, B12) 
+**Dataset**  
 
-## Project Structure
+Dataset was provided by the ICPR contest here: https://www.kaggle.com/competitions/beyond-visible-spectrum-ai-for-agriculture-2026p2/data.  
+The key features include: 
+- **Unlabeled Data:** Sentinel-2 (S2A) time-series imagery, organized by location and acquisition time
+- **Labeled Data:** 900 images for training of the following classes `Aphid, Blast, RPH, Rust`
+- **evaluation set:** 40 unlabelled samples for evaluating model performance
+
+**Project Structure**  
+
 ```
 ICPR-Contest-2026/
 ├── classification.ipynb          # Main classification pipeline with MoCo + ResNet50
 ├── classification_Prithvi.ipynb  # Prithvi foundation model approach
 ├── ssl_moco_py.ipynb            # Self-supervised learning with MoCo v2
 ├── pyproject.toml               # Project dependencies
-├── output/                      # Model checkpoints and results
+├── output/                      # Model logs and results
 └── README.md                    
 ```
 
-## Approaches  
-### 1. Self-Supervised Learning (SSL) with MoCo  
-**File:** `ssl_moco_py.ipynb`  
-Implementation of Momentum Contrast (MoCo) v2 for self-supervised pre-training on unlabeled Sentinel-2 data.  
-- **Architecture:** ResNet50 backbone 
-- **Pre-training:** MoCo v2 with momentum encoder
-- **Input:** 13-band Sentinel-2 
-- **Augmentations:** Random resize, flips, Gaussian blur, brightness adjustment
-- **Memory Bank:** 2048 negative samples
+**Models & Approaches**  
 
+**1. Self-Supervised Learning with MoCo v2**  
+Notebook: `ssl_moco_py.ipynb`
+- Backbone: ResNet50
+- Technique: Momentum Contrast v2 (MoCo) with momentum encoder
+- Input: 12 Sentinel-2 bands (B1-B9, B8A, B11, B12)
+- Augmentations: Random resize, flips, Gaussian blur, brightness adjustment
+- Memory Bank: 2048 negative samples
 
-### 2. Classification with Custom MoCo Encoder
-**File:** `classification.ipynb`  
-Fine-tunes a ResNet50 backbone pre-trained with MoCo on the labeled crop disease dataset.  
-- **Data Normalization:** Band-specific mean/std computed from data
-- **Input:** 13-band Sentinel-2 
-- **Task:** Classification with focal loss
-- **Metrics:** Macro F1
-- **Hyperparameter Optimization:** Optuna tuned Parameters: learning rate, batch size, focal gamma, weight decay, label smoothing
+**2. Downstream Classification with MoCo Encoder**   
+Notebook: `classification.ipynb`
+- Fine-tunes ResNet50 pre-trained with MoCo on labeled data
+- Input: 12 Sentinel-2 bands
+- Loss: Focal loss for class imbalance
+- Metrics: Macro F1, Accuracy
+- Optimization: Hyperparameters tuned with Optuna (learning rate, batch size, weight decay, label smoothing)
 
-### 3. Foundation Model Approach (Prithvi)
-**File:** `classification_Prithvi.ipynb`  
-Uses the Prithvi geospatial foundation model, a Vision Transformer pre-trained on NASA's HLS dataset.  
-- **Model:** Prithvi ViT (300M/600M parameters)
-- **Input:** 6-band Sentinel-2 (B2, B3, B4, B5, B6, B7)
-- **Framework:** IBM Terratorch for geospatial AI
-- **Task:** Classification with focal loss
-- **Normalization:** Band-specific mean/std using prithvi mean/std
-- **Metrics:** Macro F1
+**3. Foundation Model Approach (Prithvi)**   
+Notebook: `classification_Prithvi.ipynb`  
+- Uses Prithvi Vision Transformer, pre-trained on NASA HLS dataset
+- Input: 6 Sentinel-2 bands (B2-B7)
+- Framework: IBM Terratorch for geospatial AI
+- Loss: Focal loss for class imbalance
+- Metrics: Macro F1, Accuracy
 
-## Results
-Best Model Performance:  
-**MoCo + ResNet50 (Linear classification):**
-- Validation F1 (Macro): **0.678**
-- Accuracy: **87.5%**
+**Results**  
+Model Performance comparison:  
+| Experiment | Weights | Val Macro F1-score (%) | Evaluation Score (%) |
+|------------|---------|-----------------------|--------------------|
+| Baseline   | ResNet50 S2 weights | 58.7 | 81.25 |
+| Exp 1      | SSL pretrained subset | 67.8 | 87.5 |
+| Exp 2      | SSL pretrained subset + aug* | 64.9 | 87.5 |
+| Exp 3      | SSL pretrained full | 26.8 | 50.0 |
+| Exp 4      | Prithvi 300M | 53.8 | 75.0 |
+| Exp 5      | Prithvi 600M | 55.0 | 81.5 |
 
-**Prithvi Foundation Model:**
-- Validation F1 (Macro): **0.55**
-- Accuracy: **81.5%**
+Observations:  
+- SSL pre-training with MoCo significantly improves downstream classification performance.
+- Prithvi offer strong generalization but may underperform on small, domain-specific labeled datasets compared to task-specific SSL approaches.
 
-
-## Acknowledgments 
-ICPR Contest 2026 organizers for the dataset
