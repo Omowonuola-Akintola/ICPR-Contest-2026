@@ -1,0 +1,11 @@
+data/
+lightning_logs/
+logs/
+.DS_Store
+SSL_data_prep.txt
+.venv/
+.python-version
+__pycache__/
+*.pyc
+.env
+output/
