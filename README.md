@@ -24,11 +24,12 @@ The key features include:
 
 ```
 ICPR-Contest-2026/
-├── classification.ipynb          # Main classification pipeline with MoCo + ResNet50
+├── classification.ipynb          # classification pipeline with MoCo
 ├── classification_Prithvi.ipynb  # Prithvi foundation model approach
 ├── ssl_moco_py.ipynb            # Self-supervised learning with MoCo v2
 ├── pyproject.toml               # Project dependencies
 ├── output/                      # Model logs and results
+├── report.pdf                   # detailed report on the project
 └── README.md                    
 ```
 
