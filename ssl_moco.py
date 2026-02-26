@@ -354,7 +354,7 @@ def main(data_cfg, training_cfg):
         precision=16,
         accelerator="gpu", # if torch.cuda.is_available() else "cpu",
         #devices = [0], # training_cfg.devices,
-	deterministic=True,
+	    deterministic=True,
         callbacks=[checkpoint_callback],
         logger=logger)
     
@@ -372,15 +372,10 @@ def main(data_cfg, training_cfg):
 
 if __name__ == "__main__":
     device =  "cpu"
-    target_num_workers = int(os.cpu_count())  # *0.75 Use 75% of available CPU cores
+    target_num_workers = int(os.cpu_count()*0.75)  # *0.75 Use 75% of available CPU cores
     print("Using device:", device)
     print("CPU cores available:", os.cpu_count())
     print("CPU cores using:", target_num_workers)
-
-    # target_num_workers = 0 # Use 75% of available CPU cores
-
-    # target_batch_size = 64   # prefer 256 or 128 depending on GPU memory
-    # target_patch_size = 264  # Not used in current code but can be added for random cropping
 
     parser = argparse.ArgumentParser(description="Calculate dataset statistics")
     parser.add_argument(
@@ -403,12 +398,9 @@ if __name__ == "__main__":
         help="Number of workers for data loading"
     )
     
-    # args = parser.parse_args()
     args, unknown = parser.parse_known_args()
-    # print("args: ", args)
-    # print("unknown", unknown)
+
     # Training configuration
-    
     data_cfg = DataConfig(
         data_root_dir=args.data_root_dir,
         compute_stats=True,
@@ -423,16 +415,16 @@ if __name__ == "__main__":
         model="resnet50",
         in_channels=13,
         version=2,
-        lr=0.003, #1e-4,
+        lr=2e-4, #1e-4,
         use_peft=False,
         temperature=0.15,
         memory_bank_size= 8192, #4096, #16000, #4096, #2048
         target_size=224,
         batch_size=256, #128, #256, #64, #32
-        max_epochs=100,
         weight_decay=1e-4,
         moco_momentum=0.995,
-        schedule=[60, 80],
+        max_epochs=100,
+        # schedule=[60, 80],
         # ckpt_path =x "/home/krschap/rabina/ICPR-Contest-2026/output/ssl_v1_e20_50_b96_mem_16k/ssl_ckpt_20260215_104921.ckpt"
     )
     main(data_cfg, training_cfg)
