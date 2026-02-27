@@ -67,10 +67,10 @@ g.manual_seed(seed)
 @dataclass
 class DataConfig:
     data_root_dir: str = "/home/krschap/rabina/data/s2a"
-    compute_stats: bool = True
-    n_samples: int = None
-    batch_size: int = 64
-    patch_size: int = 264
+    # compute_stats: bool = True
+    # n_samples: int = None
+    # batch_size: int = 64
+    # patch_size: int = 264
     num_workers: int = 1
 
 @dataclass
@@ -154,57 +154,57 @@ class SSLDataset(Dataset):
 
         return {"image": patch_tensor}
 
-def calculate_stats_parallel(dataset, n_samples=None, batch_size=16, num_workers=4):
+# def calculate_stats_parallel(dataset, n_samples=None, batch_size=16, num_workers=4):
 
-    total = len(dataset)
-    print(f"Total samples in dataset: {total}")
+#     total = len(dataset)
+#     print(f"Total samples in dataset: {total}")
 
-    if n_samples is not None:
-        n = min(total, n_samples)
-        print(f"Calculating stats on {n} randomly selected samples...")
-        # Randomly select a subset of indices for efficiency
-        np.random.seed(seed)
-        indices = np.random.choice(total, size=n, replace=False)
-        subset = Subset(dataset, indices)
-    else:
-        print(f"Calculating stats on the entire dataset...")
-        subset = dataset
-        n_samples=total
+#     if n_samples is not None:
+#         n = min(total, n_samples)
+#         print(f"Calculating stats on {n} randomly selected samples...")
+#         # Randomly select a subset of indices for efficiency
+#         np.random.seed(seed)
+#         indices = np.random.choice(total, size=n, replace=False)
+#         subset = Subset(dataset, indices)
+#     else:
+#         print(f"Calculating stats on the entire dataset...")
+#         subset = dataset
+#         n_samples=total
 
-    loader = DataLoader(
-        subset,
-        batch_size=batch_size,
-        shuffle=False,
-        num_workers=num_workers,
-        worker_init_fn=seed_worker,
-        generator=g
-    )
+#     loader = DataLoader(
+#         subset,
+#         batch_size=batch_size,
+#         shuffle=False,
+#         num_workers=num_workers,
+#         worker_init_fn=seed_worker,
+#         generator=g
+#     )
 
-    channel_sum = 0.0
-    channel_sum_sq = 0.0
-    num_pixels = 0
+#     channel_sum = 0.0
+#     channel_sum_sq = 0.0
+#     num_pixels = 0
 
-    total_batches = len(loader)
-    print(f"Total batches to process: {total_batches}")
-    for batch_idx, batch in enumerate(loader, start=1):
-        imgs = batch["image"]
-        b, c, h, w = imgs.shape
-        channel_sum += imgs.sum(dim=(0, 2, 3))
-        channel_sum_sq += (imgs**2).sum(dim=(0, 2, 3))
-        num_pixels += b * h * w
+#     total_batches = len(loader)
+#     print(f"Total batches to process: {total_batches}")
+#     for batch_idx, batch in enumerate(loader, start=1):
+#         imgs = batch["image"]
+#         b, c, h, w = imgs.shape
+#         channel_sum += imgs.sum(dim=(0, 2, 3))
+#         channel_sum_sq += (imgs**2).sum(dim=(0, 2, 3))
+#         num_pixels += b * h * w
 
-        if batch_idx % 20 == 0 or batch_idx == total_batches:
-            print(f"Processed batch {batch_idx}/{total_batches} ")
-                # f"≈ {batch_idx * b}/{n_samples} samples")
+#         if batch_idx % 20 == 0 or batch_idx == total_batches:
+#             print(f"Processed batch {batch_idx}/{total_batches} ")
+#                 # f"≈ {batch_idx * b}/{n_samples} samples")
 
-    mean = channel_sum / num_pixels
-    torch.set_printoptions(sci_mode=False, precision=4)
-    # std  = torch.sqrt(channel_sum_sq / num_pixels - mean**2)
-    variance = channel_sum_sq / num_pixels - mean**2
-    variance = torch.clamp(variance, min=0)  # Avoid negative values
-    # Add small epsilon to avoid sqrt(0) issues
-    std = torch.sqrt(variance + 1e-8)
-    return mean, std
+#     mean = channel_sum / num_pixels
+#     torch.set_printoptions(sci_mode=False, precision=4)
+#     # std  = torch.sqrt(channel_sum_sq / num_pixels - mean**2)
+#     variance = channel_sum_sq / num_pixels - mean**2
+#     variance = torch.clamp(variance, min=0)  # Avoid negative values
+#     # Add small epsilon to avoid sqrt(0) issues
+#     std = torch.sqrt(variance + 1e-8)
+#     return mean, std
 
 
 def summary_trainable(model):
@@ -236,9 +236,10 @@ def main(data_cfg, training_cfg):
     logger = CSVLogger("logs", name=f"{training_cfg.experiment_out_dir}/metrics_{timestamp}")
 
     aug = K.AugmentationSequential(
-        K.RandomResizedCrop(size=(training_cfg.target_size, training_cfg.target_size), scale=(0.4, 1.0)),
+        # K.RandomResizedCrop(size=(training_cfg.target_size, training_cfg.target_size), scale=(0.4, 1.0)),
         K.RandomHorizontalFlip(),
         K.RandomVerticalFlip(),
+        K.RandomRotation(degrees=90, p=0.5),
         K.RandomGaussianBlur(kernel_size=(7,7), sigma=(0.1, 1.5), p=0.3),
         K.RandomBrightness(brightness=(0.85, 1.15), p=0.5),
         data_keys=['input'],
@@ -251,38 +252,39 @@ def main(data_cfg, training_cfg):
     # ========================
     # Compute dataset statistics (mean, std)
     # ========================
-    if data_cfg.compute_stats:
-        import time
-        temp_dataset = SSLDataset(scenes, bands, patch_size=data_cfg.patch_size)
-        start_time = time.time()
-        mean, std = calculate_stats_parallel(temp_dataset, n_samples=data_cfg.n_samples, batch_size=data_cfg.batch_size, num_workers=data_cfg.num_workers)
-        end_time = time.time()
-        print(f"calculate_stats time: {(end_time-start_time)/60:.2f} min")
-        print("Mean:", mean)
-        print("Std:", std)
-        mean = mean.tolist()
-        std = std.tolist()
-    else:
-        print("Using pre-computed mean and std")
-        #mean =[1328.4436, 1482.5221, 1740.3857, 1979.3049, 2315.6162, 2831.3088,
-        #3059.5698, 3186.5637, 3219.2263, 3335.3401,    0.0000, 2681.6624,
-        #2115.0349]
-        #std= [ 2220.1262,  2215.2034,  2099.9836,  2154.2893,  2125.3611,  1939.4614,
-        # 1884.4596,  1939.1335,  1798.6873,  2043.5856,     0.0001,  1251.5514,
-        # 1135.9915]
-        mean = [1353.9951, 1509.2384, 1764.3514, 2005.2811, 2338.1492, 2837.3188,
-            3057.8025, 3186.8677, 3214.5554, 3324.5664,    0.0000, 2632.6152,
-            2074.0703]
+    # if data_cfg.compute_stats:
+    #     import time
+    #     temp_dataset = SSLDataset(scenes, bands, patch_size=data_cfg.patch_size)
+    #     start_time = time.time()
+    #     mean, std = calculate_stats_parallel(temp_dataset, n_samples=data_cfg.n_samples, batch_size=data_cfg.batch_size, num_workers=data_cfg.num_workers)
+    #     end_time = time.time()
+    #     print(f"calculate_stats time: {(end_time-start_time)/60:.2f} min")
+    #     print("Mean:", mean)
+    #     print("Std:", std)
+    #     mean = mean.tolist()
+    #     std = std.tolist()
+    # else:
+    #     print("Using pre-computed mean and std")
+    #     #mean =[1328.4436, 1482.5221, 1740.3857, 1979.3049, 2315.6162, 2831.3088,
+    #     #3059.5698, 3186.5637, 3219.2263, 3335.3401,    0.0000, 2681.6624,
+    #     #2115.0349]
+    #     #std= [ 2220.1262,  2215.2034,  2099.9836,  2154.2893,  2125.3611,  1939.4614,
+    #     # 1884.4596,  1939.1335,  1798.6873,  2043.5856,     0.0001,  1251.5514,
+    #     # 1135.9915]
+    #     mean = [1353.9951, 1509.2384, 1764.3514, 2005.2811, 2338.1492, 2837.3188,
+    #         3057.8025, 3186.8677, 3214.5554, 3324.5664,    0.0000, 2632.6152,
+    #         2074.0703]
 	
-        std = [2251.5820, 2250.2544, 2132.0840, 2187.5188, 2156.2498, 1969.8088,
-            1909.7422, 1970.6365, 1823.0107, 2047.6980,    0.0001, 1256.4541,
-            1126.3496]
+    #     std = [2251.5820, 2250.2544, 2132.0840, 2187.5188, 2156.2498, 1969.8088,
+    #         1909.7422, 1970.6365, 1823.0107, 2047.6980,    0.0001, 1256.4541,
+    #         1126.3496]
     # ========================
     # Train MoCo model
     # ========================
     transform = transforms.Compose([
         transforms.Resize((training_cfg.target_size, training_cfg.target_size)),
-        transforms.Normalize(mean=mean, std=std)
+        # transforms.Normalize(mean=mean, std=std)
+        transforms.Lambda(lambda x: torch.clamp(x, 0, 10000) / 10000.0),
     ])
         
     dataset = SSLDataset(scenes, bands, transforms=transform, patch_size=training_cfg.target_size)
@@ -292,7 +294,7 @@ def main(data_cfg, training_cfg):
     data_loader = DataLoader(
         dataset,
         batch_size=training_cfg.batch_size,
-        shuffle=False,
+        shuffle=True,
         num_workers=data_cfg.num_workers,
         worker_init_fn=seed_worker,
         generator=g
@@ -363,11 +365,11 @@ def main(data_cfg, training_cfg):
         callbacks=[checkpoint_callback],
         logger=logger)
     
-    print("USING DEVICE CONFIRMATION", next(task.parameters()).device)
+    print("USING DEVICE CONFIRMATION", trainer.strategy.root_device)
     start_time=time.time()
     trainer.fit(task, data_loader, ckpt_path=training_cfg.ckpt_path)
     end_time=time.time()
-    print("After fit device:", next(task.parameters()).device)
+    # print("After fit device:", next(task.parameters()).device)
     print(f"Training time: {(end_time-start_time)/60} min")
 
     torch.save(task.backbone.state_dict(),f"{training_cfg.experiment_out_dir}/ssl_backbone_{timestamp}.pth")
@@ -408,15 +410,15 @@ if __name__ == "__main__":
     # Training configuration
     data_cfg = DataConfig(
         data_root_dir=args.data_root_dir,
-        compute_stats=False,
-        n_samples=args.n_samples, # only used for stats calculation, not training
+        # compute_stats=False,
+        # n_samples=args.n_samples, # only used for stats calculation, not training
         num_workers=args.num_workers,
-        batch_size=128, # only used for stats calculation, not training
-        patch_size=264, # only used for stats calculation, not training
+        # batch_size=128, # only used for stats calculation, not training
+        # patch_size=264, # only used for stats calculation, not training
     )
 
     training_cfg = TrainingConfig(
-        experiment_out_dir=f"output/ssl_subset_v2_e50_b256_mem_8k",
+        experiment_out_dir=f"output/ssl_subset_v3_e50_b256_mem_8k_rm_norm",
         model="resnet50",
         in_channels=13,
         version=2,
@@ -428,7 +430,7 @@ if __name__ == "__main__":
         batch_size=128, #128, #256, #64, #32
         weight_decay=1e-4,
         moco_momentum=0.995,
-        max_epochs=100,
+        max_epochs=50,
         # schedule=[60, 80],
         # ckpt_path =x "/home/krschap/rabina/ICPR-Contest-2026/output/ssl_v1_e20_50_b96_mem_16k/ssl_ckpt_20260215_104921.ckpt"
     )
