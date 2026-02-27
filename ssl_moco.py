@@ -56,7 +56,7 @@ torch.use_deterministic_algorithms(True)
 # Timestamp for logging / checkpoints
 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 
-def seed_worker():
+def seed_worker(worker_id):
     worker_seed = torch.initial_seed() % 2**32
     np.random.seed(worker_seed)
     random.seed(worker_seed)
@@ -90,7 +90,7 @@ class TrainingConfig:
     ckpt_path: Optional[str] = None
     weight_decay: float = 1e-4
     moco_momentum: float = 0.995
-    schedule: Sequence[int] = [60, 80]
+    #schedule: Sequence[int] = [60, 80]
     #devices = []
 
 class SSLDataset(Dataset):
@@ -264,14 +264,19 @@ def main(data_cfg, training_cfg):
         std = std.tolist()
     else:
         print("Using pre-computed mean and std")
-        mean =[1328.4436, 1482.5221, 1740.3857, 1979.3049, 2315.6162, 2831.3088,
-        3059.5698, 3186.5637, 3219.2263, 3335.3401,    0.0000, 2681.6624,
-        2115.0349]
-        
-        std= [ 2220.1262,  2215.2034,  2099.9836,  2154.2893,  2125.3611,  1939.4614,
-         1884.4596,  1939.1335,  1798.6873,  2043.5856,     0.0001,  1251.5514,
-         1135.9915]
-
+        #mean =[1328.4436, 1482.5221, 1740.3857, 1979.3049, 2315.6162, 2831.3088,
+        #3059.5698, 3186.5637, 3219.2263, 3335.3401,    0.0000, 2681.6624,
+        #2115.0349]
+        #std= [ 2220.1262,  2215.2034,  2099.9836,  2154.2893,  2125.3611,  1939.4614,
+        # 1884.4596,  1939.1335,  1798.6873,  2043.5856,     0.0001,  1251.5514,
+        # 1135.9915]
+        mean = [1353.9951, 1509.2384, 1764.3514, 2005.2811, 2338.1492, 2837.3188,
+            3057.8025, 3186.8677, 3214.5554, 3324.5664,    0.0000, 2632.6152,
+            2074.0703]
+	
+        std = [2251.5820, 2250.2544, 2132.0840, 2187.5188, 2156.2498, 1969.8088,
+            1909.7422, 1970.6365, 1823.0107, 2047.6980,    0.0001, 1256.4541,
+            1126.3496]
     # ========================
     # Train MoCo model
     # ========================
@@ -308,8 +313,8 @@ def main(data_cfg, training_cfg):
         weight_decay=training_cfg.weight_decay,
         memory_bank_size=training_cfg.memory_bank_size,
         temperature=training_cfg.temperature,
-        moco_momentum=training_cfg.moco_momentum,
-        schedule=training_cfg.schedule
+        moco_momentum=training_cfg.moco_momentum
+        #schedule=training_cfg.schedule
     )
 
     # -----------------------------
@@ -381,7 +386,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--data_root_dir",
         type=str,
-        default="/kaggle/input/datasets/rabinatwayana/icpr-2026-competition-ssl-s2a-3k-subset/ICPR_SSL_S2A_3k_sample",
+        default="/home/krschap/rabina/data/s2a_subset",
         help="Path to the root directory of scenes"
     )
     parser.add_argument(
@@ -403,10 +408,10 @@ if __name__ == "__main__":
     # Training configuration
     data_cfg = DataConfig(
         data_root_dir=args.data_root_dir,
-        compute_stats=True,
+        compute_stats=False,
         n_samples=args.n_samples, # only used for stats calculation, not training
         num_workers=args.num_workers,
-        batch_size=256, # only used for stats calculation, not training
+        batch_size=128, # only used for stats calculation, not training
         patch_size=264, # only used for stats calculation, not training
     )
 
@@ -418,9 +423,9 @@ if __name__ == "__main__":
         lr=2e-4, #1e-4,
         use_peft=False,
         temperature=0.15,
-        memory_bank_size= 8192, #4096, #16000, #4096, #2048
+        memory_bank_size= 4096, #4096, #16000, #4096, #2048
         target_size=224,
-        batch_size=256, #128, #256, #64, #32
+        batch_size=128, #128, #256, #64, #32
         weight_decay=1e-4,
         moco_momentum=0.995,
         max_epochs=100,

@@ -4,8 +4,10 @@ import os
 import shutil
 
 # Paths
-source_root = "/Users/rabinatwayana/1_Rabina/3_CDE_III/ICPR_competition/ICPR-Contest-2026/data/s2a"          # original data folder
-destination_root = "/Users/rabinatwayana/1_Rabina/3_CDE_III/ICPR_competition/ICPR-Contest-2026/data/s2a_selected"   # where new selected folders will go
+source_root = "/home/krschap/rabina/data/s2a"
+destination_root="/home/krschap/rabina/data/s2a_subset"
+#source_root = "/Users/rabinatwayana/1_Rabina/3_CDE_III/ICPR_competition/ICPR-Contest-2026/data/s2a"          # original data folder
+#destination_root = "/Users/rabinatwayana/1_Rabina/3_CDE_III/ICPR_competition/ICPR-Contest-2026/data/s2a_selected"   # where new selected folders will go
 
 # Make destination folder if it doesn't exist
 os.makedirs(destination_root, exist_ok=True)
