@@ -358,6 +358,7 @@ def main(data_cfg, training_cfg):
         max_epochs=training_cfg.max_epochs,
         enable_progress_bar=True, 
         log_every_n_steps=num_batches,
+        accumulate_grad_batches=2,
         precision=16,
         accelerator="gpu", # if torch.cuda.is_available() else "cpu",
         #devices = [0], # training_cfg.devices,
@@ -388,7 +389,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--data_root_dir",
         type=str,
-        default="/home/krschap/rabina/data/s2a_subset",
+        default="/home/krschap/rabina/data/s2a",
         help="Path to the root directory of scenes"
     )
     parser.add_argument(
@@ -418,18 +419,18 @@ if __name__ == "__main__":
     )
 
     training_cfg = TrainingConfig(
-        experiment_out_dir=f"output/ssl_subset_v3_e50_b256_mem_8k_rm_norm",
+        experiment_out_dir=f"output/ssl_full_v4_e50_b256_mem_16k_rm_norm",
         model="resnet50",
         in_channels=13,
         version=2,
-        lr=2e-4, #1e-4,
+        lr=3e-4, #1e-4,
         use_peft=False,
         temperature=0.15,
-        memory_bank_size= 4096, #4096, #16000, #4096, #2048
+        memory_bank_size= 16384, #4096, #16000, #4096, #2048
         target_size=224,
         batch_size=128, #128, #256, #64, #32
         weight_decay=1e-4,
-        moco_momentum=0.995,
+        moco_momentum=0.999,
         max_epochs=50,
         # schedule=[60, 80],
         # ckpt_path =x "/home/krschap/rabina/ICPR-Contest-2026/output/ssl_v1_e20_50_b96_mem_16k/ssl_ckpt_20260215_104921.ckpt"
