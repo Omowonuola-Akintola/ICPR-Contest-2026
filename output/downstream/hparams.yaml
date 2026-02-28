@@ -1,7 +1,7 @@
 custom_checkpoint_path: /kaggle/input/models/rabinatwayana/ssl-subset-v3/pytorch/default/1/ssl_backbone_20260227_074423.pth
 num_classes: 4
-lr: 0.0055892234544969634
+lr: 0.003967605077052989
 freeze_backbone: true
-focal_gamma: 3.3839360923362665
-label_smoothing: 0.02937809156873913
-weight_decay: 0.0003800715410379177
+focal_gamma: 3.909729556485983
+label_smoothing: 0.04246782213565523
+weight_decay: 0.0003142880890840109

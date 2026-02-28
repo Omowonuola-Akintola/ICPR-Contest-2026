@@ -1,11 +1,11 @@
 {
-  "best_f1_score": 0.6467858552932739,
+  "best_f1_score": 0.5936270952224731,
   "best_params": {
-    "lr": 0.0055892234544969634,
-    "batch_size": 8,
-    "focal_gamma": 3.3839360923362665,
-    "weight_decay": 0.0003800715410379177,
-    "label_smoothing": 0.02937809156873913
+    "lr": 0.003967605077052989,
+    "batch_size": 16,
+    "focal_gamma": 3.909729556485983,
+    "weight_decay": 0.0003142880890840109,
+    "label_smoothing": 0.04246782213565523
   },
-  "num_trials": 20
+  "num_trials": 10
 }
