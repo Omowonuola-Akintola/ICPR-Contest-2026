@@ -31,8 +31,7 @@ ICPR-Contest-2026/
 └── README.md                    
 ```
 
-**Models & Approaches**  
-
+**Tasks:**  
 **1. Self-Supervised Learning with MoCo v2**  
 Notebook: `ssl_moco_py.ipynb`
 - Backbone: ResNet50
