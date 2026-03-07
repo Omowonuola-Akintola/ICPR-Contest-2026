@@ -24,9 +24,7 @@ The key features include:
 
 ```
 ICPR-Contest-2026/
-├── classification.ipynb          # classification pipeline with MoCo
-├── classification_Prithvi.ipynb  # Prithvi foundation model approach
-├── ssl_moco_py.ipynb            # Self-supervised learning with MoCo v2
+├── classification.ipynb          # SSL + classification pipeline with MoCo
 ├── pyproject.toml               # Project dependencies
 ├── output/                      # Model logs and results
 ├── report.pdf                   # detailed report on the project
@@ -51,26 +49,15 @@ Notebook: `classification.ipynb`
 - Metrics: Macro F1, Accuracy
 - Optimization: Hyperparameters tuned with Optuna (learning rate, batch size, weight decay, label smoothing)
 
-**3. Foundation Model Approach (Prithvi)**   
-Notebook: `classification_Prithvi.ipynb`  
-- Uses Prithvi Vision Transformer, pre-trained on NASA HLS dataset
-- Input: 6 Sentinel-2 bands (B2-B7)
-- Framework: IBM Terratorch for geospatial AI
-- Loss: Focal loss for class imbalance
-- Metrics: Macro F1, Accuracy
 
 **Results**  
 Model Performance comparison:  
 | Experiment | Weights | Val Macro F1-score (%) | Evaluation Score (%) |
 |------------|---------|-----------------------|--------------------|
 | Baseline   | ResNet50 S2 weights | 58.7 | 81.25 |
-| Exp 1      | SSL pretrained subset | 67.8 | 87.5 |
-| Exp 2      | SSL pretrained subset + aug* | 64.9 | 87.5 |
-| Exp 3      | SSL pretrained full | 26.8 | 50.0 |
-| Exp 4      | Prithvi 300M | 53.8 | 75.0 |
-| Exp 5      | Prithvi 600M | 55.0 | 81.5 |
+| Exp 1      | SSL pretrained subset | 68.7 | 87.5 |
+| Exp 2      | SSL pretrained full | 64.9 | 81.5 |
 
 Observations:  
 - SSL pre-training with MoCo significantly improves downstream classification performance.
-- Prithvi offer strong generalization but may underperform on small, domain-specific labeled datasets compared to task-specific SSL approaches.
 
