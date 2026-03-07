@@ -1,0 +1,365 @@
+
+
+[I 2026-02-27 19:17:42,272] A new study created in memory with name: moco_hyperparams
+
+  0%|          | 0/10 [00:00<?, ?it/s]
+
+Trial 0: {'lr': 0.0001329291894316216, 'batch_size': 8, 'focal_gamma': 1.4680559213273097, 'weight_decay': 2.9375384576328313e-06, 'label_smoothing': 0.011616722433639893}
+Loading custom MoCo checkpoint: /kaggle/input/models/rabinatwayana/ssl-full-v4-e50/pytorch/default/1/ssl_backbone_20260227_105432.pth
+Detected input channels: 13
+
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+💡 Tip: For seamless cloud logging and experiment tracking, try installing [litlogger](https://pypi.org/project/litlogger/) to enable LitLogger, which logs metrics and artifacts automatically to the Lightning Experiments platform.
+💡 Tip: For seamless cloud uploads and versioning, try installing [litmodels](https://pypi.org/project/litmodels/) to enable LitModelCheckpoint, which syncs automatically with the Lightning model registry.
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+
+Missing keys: 2
+Unexpected keys: 0
+
+┏━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━┓
+┃   ┃ Name            ┃ Type              ┃ Params ┃ Mode  ┃ FLOPs ┃
+┡━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━┩
+│ 0 │ encoder         │ ResNet            │ 23.5 M │ train │     0 │
+│ 1 │ classifier      │ Linear            │  8.2 K │ train │     0 │
+│ 2 │ train_f1_macro  │ MulticlassF1Score │      0 │ train │     0 │
+│ 3 │ val_f1_macro    │ MulticlassF1Score │      0 │ train │     0 │
+│ 4 │ val_f1_weighted │ MulticlassF1Score │      0 │ train │     0 │
+└───┴─────────────────┴───────────────────┴────────┴───────┴───────┘
+
+Trainable params: 8.2 K                                                                                            
+Non-trainable params: 23.5 M                                                                                       
+Total params: 23.5 M                                                                                               
+Total estimated model params size (MB): 94                                                                         
+Modules in train mode: 221                                                                                         
+Modules in eval mode: 0                                                                                            
+Total FLOPs: 0                                                                                                     
+
+Output()
+
+`Trainer.fit` stopped: `max_epochs=20` reached.
+
+[I 2026-02-27 19:23:46,762] Trial 0 finished with value: 0.2058333307504654 and parameters: {'lr': 0.0001329291894316216, 'batch_size': 8, 'focal_gamma': 1.4680559213273097, 'weight_decay': 2.9375384576328313e-06, 'label_smoothing': 0.011616722433639893}. Best is trial 0 with value: 0.2058333307504654.
+Trial 1: {'lr': 0.003967605077052989, 'batch_size': 16, 'focal_gamma': 3.909729556485983, 'weight_decay': 0.0003142880890840109, 'label_smoothing': 0.04246782213565523}
+Loading custom MoCo checkpoint: /kaggle/input/models/rabinatwayana/ssl-full-v4-e50/pytorch/default/1/ssl_backbone_20260227_105432.pth
+Detected input channels: 13
+
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+💡 Tip: For seamless cloud logging and experiment tracking, try installing [litlogger](https://pypi.org/project/litlogger/) to enable LitLogger, which logs metrics and artifacts automatically to the Lightning Experiments platform.
+💡 Tip: For seamless cloud uploads and versioning, try installing [litmodels](https://pypi.org/project/litmodels/) to enable LitModelCheckpoint, which syncs automatically with the Lightning model registry.
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+
+Missing keys: 2
+Unexpected keys: 0
+
+┏━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━┓
+┃   ┃ Name            ┃ Type              ┃ Params ┃ Mode  ┃ FLOPs ┃
+┡━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━┩
+│ 0 │ encoder         │ ResNet            │ 23.5 M │ train │     0 │
+│ 1 │ classifier      │ Linear            │  8.2 K │ train │     0 │
+│ 2 │ train_f1_macro  │ MulticlassF1Score │      0 │ train │     0 │
+│ 3 │ val_f1_macro    │ MulticlassF1Score │      0 │ train │     0 │
+│ 4 │ val_f1_weighted │ MulticlassF1Score │      0 │ train │     0 │
+└───┴─────────────────┴───────────────────┴────────┴───────┴───────┘
+
+Trainable params: 8.2 K                                                                                            
+Non-trainable params: 23.5 M                                                                                       
+Total params: 23.5 M                                                                                               
+Total estimated model params size (MB): 94                                                                         
+Modules in train mode: 221                                                                                         
+Modules in eval mode: 0                                                                                            
+Total FLOPs: 0                                                                                                     
+
+Output()
+
+`Trainer.fit` stopped: `max_epochs=20` reached.
+
+[I 2026-02-27 19:29:49,412] Trial 1 finished with value: 0.6143839955329895 and parameters: {'lr': 0.003967605077052989, 'batch_size': 16, 'focal_gamma': 3.909729556485983, 'weight_decay': 0.0003142880890840109, 'label_smoothing': 0.04246782213565523}. Best is trial 1 with value: 0.6143839955329895.
+Trial 2: {'lr': 3.511356313970405e-05, 'batch_size': 24, 'focal_gamma': 2.2958350559263474, 'weight_decay': 7.4763120622522945e-06, 'label_smoothing': 0.1223705789444759}
+Loading custom MoCo checkpoint: /kaggle/input/models/rabinatwayana/ssl-full-v4-e50/pytorch/default/1/ssl_backbone_20260227_105432.pth
+Detected input channels: 13
+
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+💡 Tip: For seamless cloud logging and experiment tracking, try installing [litlogger](https://pypi.org/project/litlogger/) to enable LitLogger, which logs metrics and artifacts automatically to the Lightning Experiments platform.
+💡 Tip: For seamless cloud uploads and versioning, try installing [litmodels](https://pypi.org/project/litmodels/) to enable LitModelCheckpoint, which syncs automatically with the Lightning model registry.
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+
+Missing keys: 2
+Unexpected keys: 0
+
+┏━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━┓
+┃   ┃ Name            ┃ Type              ┃ Params ┃ Mode  ┃ FLOPs ┃
+┡━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━┩
+│ 0 │ encoder         │ ResNet            │ 23.5 M │ train │     0 │
+│ 1 │ classifier      │ Linear            │  8.2 K │ train │     0 │
+│ 2 │ train_f1_macro  │ MulticlassF1Score │      0 │ train │     0 │
+│ 3 │ val_f1_macro    │ MulticlassF1Score │      0 │ train │     0 │
+│ 4 │ val_f1_weighted │ MulticlassF1Score │      0 │ train │     0 │
+└───┴─────────────────┴───────────────────┴────────┴───────┴───────┘
+
+Trainable params: 8.2 K                                                                                            
+Non-trainable params: 23.5 M                                                                                       
+Total params: 23.5 M                                                                                               
+Total estimated model params size (MB): 94                                                                         
+Modules in train mode: 221                                                                                         
+Modules in eval mode: 0                                                                                            
+Total FLOPs: 0                                                                                                     
+
+Output()
+
+`Trainer.fit` stopped: `max_epochs=20` reached.
+
+[I 2026-02-27 19:35:50,458] Trial 2 finished with value: 0.10639134794473648 and parameters: {'lr': 3.511356313970405e-05, 'batch_size': 24, 'focal_gamma': 2.2958350559263474, 'weight_decay': 7.4763120622522945e-06, 'label_smoothing': 0.1223705789444759}. Best is trial 1 with value: 0.6143839955329895.
+Trial 3: {'lr': 2.621087878265438e-05, 'batch_size': 24, 'focal_gamma': 3.3555278841790406, 'weight_decay': 3.972110727381911e-06, 'label_smoothing': 0.10284688768272232}
+Loading custom MoCo checkpoint: /kaggle/input/models/rabinatwayana/ssl-full-v4-e50/pytorch/default/1/ssl_backbone_20260227_105432.pth
+Detected input channels: 13
+
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+💡 Tip: For seamless cloud logging and experiment tracking, try installing [litlogger](https://pypi.org/project/litlogger/) to enable LitLogger, which logs metrics and artifacts automatically to the Lightning Experiments platform.
+💡 Tip: For seamless cloud uploads and versioning, try installing [litmodels](https://pypi.org/project/litmodels/) to enable LitModelCheckpoint, which syncs automatically with the Lightning model registry.
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+
+Missing keys: 2
+Unexpected keys: 0
+
+┏━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━┓
+┃   ┃ Name            ┃ Type              ┃ Params ┃ Mode  ┃ FLOPs ┃
+┡━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━┩
+│ 0 │ encoder         │ ResNet            │ 23.5 M │ train │     0 │
+│ 1 │ classifier      │ Linear            │  8.2 K │ train │     0 │
+│ 2 │ train_f1_macro  │ MulticlassF1Score │      0 │ train │     0 │
+│ 3 │ val_f1_macro    │ MulticlassF1Score │      0 │ train │     0 │
+│ 4 │ val_f1_weighted │ MulticlassF1Score │      0 │ train │     0 │
+└───┴─────────────────┴───────────────────┴────────┴───────┴───────┘
+
+Trainable params: 8.2 K                                                                                            
+Non-trainable params: 23.5 M                                                                                       
+Total params: 23.5 M                                                                                               
+Total estimated model params size (MB): 94                                                                         
+Modules in train mode: 221                                                                                         
+Modules in eval mode: 0                                                                                            
+Total FLOPs: 0                                                                                                     
+
+Output()
+
+[I 2026-02-27 19:39:13,623] Trial 3 finished with value: 0.09328866004943848 and parameters: {'lr': 2.621087878265438e-05, 'batch_size': 24, 'focal_gamma': 3.3555278841790406, 'weight_decay': 3.972110727381911e-06, 'label_smoothing': 0.10284688768272232}. Best is trial 1 with value: 0.6143839955329895.
+Trial 4: {'lr': 0.0005987474910461401, 'batch_size': 16, 'focal_gamma': 1.1951547789558385, 'weight_decay': 0.0007025166339242157, 'label_smoothing': 0.19312640661491187}
+Loading custom MoCo checkpoint: /kaggle/input/models/rabinatwayana/ssl-full-v4-e50/pytorch/default/1/ssl_backbone_20260227_105432.pth
+Detected input channels: 13
+
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+💡 Tip: For seamless cloud logging and experiment tracking, try installing [litlogger](https://pypi.org/project/litlogger/) to enable LitLogger, which logs metrics and artifacts automatically to the Lightning Experiments platform.
+💡 Tip: For seamless cloud uploads and versioning, try installing [litmodels](https://pypi.org/project/litmodels/) to enable LitModelCheckpoint, which syncs automatically with the Lightning model registry.
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+
+Missing keys: 2
+Unexpected keys: 0
+
+┏━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━┓
+┃   ┃ Name            ┃ Type              ┃ Params ┃ Mode  ┃ FLOPs ┃
+┡━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━┩
+│ 0 │ encoder         │ ResNet            │ 23.5 M │ train │     0 │
+│ 1 │ classifier      │ Linear            │  8.2 K │ train │     0 │
+│ 2 │ train_f1_macro  │ MulticlassF1Score │      0 │ train │     0 │
+│ 3 │ val_f1_macro    │ MulticlassF1Score │      0 │ train │     0 │
+│ 4 │ val_f1_weighted │ MulticlassF1Score │      0 │ train │     0 │
+└───┴─────────────────┴───────────────────┴────────┴───────┴───────┘
+
+Trainable params: 8.2 K                                                                                            
+Non-trainable params: 23.5 M                                                                                       
+Total params: 23.5 M                                                                                               
+Total estimated model params size (MB): 94                                                                         
+Modules in train mode: 221                                                                                         
+Modules in eval mode: 0                                                                                            
+Total FLOPs: 0                                                                                                     
+
+Output()
+
+[I 2026-02-27 19:39:33,604] Trial 4 pruned. Trial was pruned at epoch 0.
+Trial 5: {'lr': 0.002661901888489057, 'batch_size': 24, 'focal_gamma': 2.3204574812188037, 'weight_decay': 2.3233503515390116e-06, 'label_smoothing': 0.09903538202225404}
+Loading custom MoCo checkpoint: /kaggle/input/models/rabinatwayana/ssl-full-v4-e50/pytorch/default/1/ssl_backbone_20260227_105432.pth
+Detected input channels: 13
+
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+💡 Tip: For seamless cloud logging and experiment tracking, try installing [litlogger](https://pypi.org/project/litlogger/) to enable LitLogger, which logs metrics and artifacts automatically to the Lightning Experiments platform.
+💡 Tip: For seamless cloud uploads and versioning, try installing [litmodels](https://pypi.org/project/litmodels/) to enable LitModelCheckpoint, which syncs automatically with the Lightning model registry.
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+
+Missing keys: 2
+Unexpected keys: 0
+
+┏━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━┓
+┃   ┃ Name            ┃ Type              ┃ Params ┃ Mode  ┃ FLOPs ┃
+┡━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━┩
+│ 0 │ encoder         │ ResNet            │ 23.5 M │ train │     0 │
+│ 1 │ classifier      │ Linear            │  8.2 K │ train │     0 │
+│ 2 │ train_f1_macro  │ MulticlassF1Score │      0 │ train │     0 │
+│ 3 │ val_f1_macro    │ MulticlassF1Score │      0 │ train │     0 │
+│ 4 │ val_f1_weighted │ MulticlassF1Score │      0 │ train │     0 │
+└───┴─────────────────┴───────────────────┴────────┴───────┴───────┘
+
+Trainable params: 8.2 K                                                                                            
+Non-trainable params: 23.5 M                                                                                       
+Total params: 23.5 M                                                                                               
+Total estimated model params size (MB): 94                                                                         
+Modules in train mode: 221                                                                                         
+Modules in eval mode: 0                                                                                            
+Total FLOPs: 0                                                                                                     
+
+Output()
+
+`Trainer.fit` stopped: `max_epochs=20` reached.
+
+[I 2026-02-27 19:45:44,406] Trial 5 finished with value: 0.4946924149990082 and parameters: {'lr': 0.002661901888489057, 'batch_size': 24, 'focal_gamma': 2.3204574812188037, 'weight_decay': 2.3233503515390116e-06, 'label_smoothing': 0.09903538202225404}. Best is trial 1 with value: 0.6143839955329895.
+Trial 6: {'lr': 1.2681352169084594e-05, 'batch_size': 8, 'focal_gamma': 1.9351332282682328, 'weight_decay': 3.632486956676606e-05, 'label_smoothing': 0.10934205586865593}
+Loading custom MoCo checkpoint: /kaggle/input/models/rabinatwayana/ssl-full-v4-e50/pytorch/default/1/ssl_backbone_20260227_105432.pth
+Detected input channels: 13
+
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+💡 Tip: For seamless cloud logging and experiment tracking, try installing [litlogger](https://pypi.org/project/litlogger/) to enable LitLogger, which logs metrics and artifacts automatically to the Lightning Experiments platform.
+💡 Tip: For seamless cloud uploads and versioning, try installing [litmodels](https://pypi.org/project/litmodels/) to enable LitModelCheckpoint, which syncs automatically with the Lightning model registry.
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+
+Missing keys: 2
+Unexpected keys: 0
+
+┏━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━┓
+┃   ┃ Name            ┃ Type              ┃ Params ┃ Mode  ┃ FLOPs ┃
+┡━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━┩
+│ 0 │ encoder         │ ResNet            │ 23.5 M │ train │     0 │
+│ 1 │ classifier      │ Linear            │  8.2 K │ train │     0 │
+│ 2 │ train_f1_macro  │ MulticlassF1Score │      0 │ train │     0 │
+│ 3 │ val_f1_macro    │ MulticlassF1Score │      0 │ train │     0 │
+│ 4 │ val_f1_weighted │ MulticlassF1Score │      0 │ train │     0 │
+└───┴─────────────────┴───────────────────┴────────┴───────┴───────┘
+
+Trainable params: 8.2 K                                                                                            
+Non-trainable params: 23.5 M                                                                                       
+Total params: 23.5 M                                                                                               
+Total estimated model params size (MB): 94                                                                         
+Modules in train mode: 221                                                                                         
+Modules in eval mode: 0                                                                                            
+Total FLOPs: 0                                                                                                     
+
+Output()
+
+[I 2026-02-27 19:46:03,215] Trial 6 pruned. Trial was pruned at epoch 0.
+Trial 7: {'lr': 3.585612610345396e-05, 'batch_size': 8, 'focal_gamma': 3.6844820512829464, 'weight_decay': 6.218704727769077e-05, 'label_smoothing': 0.18437484700462337}
+Loading custom MoCo checkpoint: /kaggle/input/models/rabinatwayana/ssl-full-v4-e50/pytorch/default/1/ssl_backbone_20260227_105432.pth
+Detected input channels: 13
+
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+💡 Tip: For seamless cloud logging and experiment tracking, try installing [litlogger](https://pypi.org/project/litlogger/) to enable LitLogger, which logs metrics and artifacts automatically to the Lightning Experiments platform.
+💡 Tip: For seamless cloud uploads and versioning, try installing [litmodels](https://pypi.org/project/litmodels/) to enable LitModelCheckpoint, which syncs automatically with the Lightning model registry.
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+
+Missing keys: 2
+Unexpected keys: 0
+
+┏━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━┓
+┃   ┃ Name            ┃ Type              ┃ Params ┃ Mode  ┃ FLOPs ┃
+┡━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━┩
+│ 0 │ encoder         │ ResNet            │ 23.5 M │ train │     0 │
+│ 1 │ classifier      │ Linear            │  8.2 K │ train │     0 │
+│ 2 │ train_f1_macro  │ MulticlassF1Score │      0 │ train │     0 │
+│ 3 │ val_f1_macro    │ MulticlassF1Score │      0 │ train │     0 │
+│ 4 │ val_f1_weighted │ MulticlassF1Score │      0 │ train │     0 │
+└───┴─────────────────┴───────────────────┴────────┴───────┴───────┘
+
+Trainable params: 8.2 K                                                                                            
+Non-trainable params: 23.5 M                                                                                       
+Total params: 23.5 M                                                                                               
+Total estimated model params size (MB): 94                                                                         
+Modules in train mode: 221                                                                                         
+Modules in eval mode: 0                                                                                            
+Total FLOPs: 0                                                                                                     
+
+Output()
+
+[I 2026-02-27 19:46:22,271] Trial 7 pruned. Trial was pruned at epoch 0.
+Trial 8: {'lr': 1.8427970406864546e-05, 'batch_size': 24, 'focal_gamma': 2.166031869068446, 'weight_decay': 6.516990611177181e-06, 'label_smoothing': 0.1657475018303859}
+Loading custom MoCo checkpoint: /kaggle/input/models/rabinatwayana/ssl-full-v4-e50/pytorch/default/1/ssl_backbone_20260227_105432.pth
+Detected input channels: 13
+
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+💡 Tip: For seamless cloud logging and experiment tracking, try installing [litlogger](https://pypi.org/project/litlogger/) to enable LitLogger, which logs metrics and artifacts automatically to the Lightning Experiments platform.
+💡 Tip: For seamless cloud uploads and versioning, try installing [litmodels](https://pypi.org/project/litmodels/) to enable LitModelCheckpoint, which syncs automatically with the Lightning model registry.
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+
+Missing keys: 2
+Unexpected keys: 0
+
+┏━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━┓
+┃   ┃ Name            ┃ Type              ┃ Params ┃ Mode  ┃ FLOPs ┃
+┡━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━┩
+│ 0 │ encoder         │ ResNet            │ 23.5 M │ train │     0 │
+│ 1 │ classifier      │ Linear            │  8.2 K │ train │     0 │
+│ 2 │ train_f1_macro  │ MulticlassF1Score │      0 │ train │     0 │
+│ 3 │ val_f1_macro    │ MulticlassF1Score │      0 │ train │     0 │
+│ 4 │ val_f1_weighted │ MulticlassF1Score │      0 │ train │     0 │
+└───┴─────────────────┴───────────────────┴────────┴───────┴───────┘
+
+Trainable params: 8.2 K                                                                                            
+Non-trainable params: 23.5 M                                                                                       
+Total params: 23.5 M                                                                                               
+Total estimated model params size (MB): 94                                                                         
+Modules in train mode: 221                                                                                         
+Modules in eval mode: 0                                                                                            
+Total FLOPs: 0                                                                                                     
+
+Output()
+
+[I 2026-02-27 19:46:42,927] Trial 8 pruned. Trial was pruned at epoch 0.
+Trial 9: {'lr': 0.00011756010900231849, 'batch_size': 16, 'focal_gamma': 3.406590942262119, 'weight_decay': 1.6736010167825795e-06, 'label_smoothing': 0.19737738732010346}
+Loading custom MoCo checkpoint: /kaggle/input/models/rabinatwayana/ssl-full-v4-e50/pytorch/default/1/ssl_backbone_20260227_105432.pth
+Detected input channels: 13
+
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+💡 Tip: For seamless cloud logging and experiment tracking, try installing [litlogger](https://pypi.org/project/litlogger/) to enable LitLogger, which logs metrics and artifacts automatically to the Lightning Experiments platform.
+💡 Tip: For seamless cloud uploads and versioning, try installing [litmodels](https://pypi.org/project/litmodels/) to enable LitModelCheckpoint, which syncs automatically with the Lightning model registry.
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+
+Missing keys: 2
+Unexpected keys: 0
+
+┏━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━┓
+┃   ┃ Name            ┃ Type              ┃ Params ┃ Mode  ┃ FLOPs ┃
+┡━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━┩
+│ 0 │ encoder         │ ResNet            │ 23.5 M │ train │     0 │
+│ 1 │ classifier      │ Linear            │  8.2 K │ train │     0 │
+│ 2 │ train_f1_macro  │ MulticlassF1Score │      0 │ train │     0 │
+│ 3 │ val_f1_macro    │ MulticlassF1Score │      0 │ train │     0 │
+│ 4 │ val_f1_weighted │ MulticlassF1Score │      0 │ train │     0 │
+└───┴─────────────────┴───────────────────┴────────┴───────┴───────┘
+
+Trainable params: 8.2 K                                                                                            
+Non-trainable params: 23.5 M                                                                                       
+Total params: 23.5 M                                                                                               
+Total estimated model params size (MB): 94                                                                         
+Modules in train mode: 221                                                                                         
+Modules in eval mode: 0                                                                                            
+Total FLOPs: 0                                                                                                     
+
+Output()
+
+[I 2026-02-27 19:47:02,871] Trial 9 pruned. Trial was pruned at epoch 0.
+Training time: 29.343356438477834 min
+Best hyperparameters:
+Best F1 Score: 0.6144
+
+Optimal parameters:
+  lr: 0.003967605077052989
+  batch_size: 16
+  focal_gamma: 3.909729556485983
+  weight_decay: 0.0003142880890840109
+  label_smoothing: 0.04246782213565523
+

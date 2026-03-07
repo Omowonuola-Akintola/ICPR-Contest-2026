@@ -1,0 +1,49 @@
+
+
+Loading custom MoCo checkpoint: /kaggle/input/models/rabinatwayana/ssl-full-v4-e50/pytorch/default/1/ssl_backbone_20260227_105432.pth
+Detected input channels: 13
+
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+💡 Tip: For seamless cloud logging and experiment tracking, try installing [litlogger](https://pypi.org/project/litlogger/) to enable LitLogger, which logs metrics and artifacts automatically to the Lightning Experiments platform.
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+
+Missing keys: 2
+Unexpected keys: 0
+Class counts in train split: [232.0, 60.0, 396.0, 32.0]
+
+┏━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━┓
+┃   ┃ Name            ┃ Type              ┃ Params ┃ Mode  ┃ FLOPs ┃
+┡━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━┩
+│ 0 │ encoder         │ ResNet            │ 23.5 M │ train │     0 │
+│ 1 │ classifier      │ Linear            │  8.2 K │ train │     0 │
+│ 2 │ train_f1_macro  │ MulticlassF1Score │      0 │ train │     0 │
+│ 3 │ val_f1_macro    │ MulticlassF1Score │      0 │ train │     0 │
+│ 4 │ val_f1_weighted │ MulticlassF1Score │      0 │ train │     0 │
+└───┴─────────────────┴───────────────────┴────────┴───────┴───────┘
+
+Trainable params: 8.2 K                                                                                            
+Non-trainable params: 23.5 M                                                                                       
+Total params: 23.5 M                                                                                               
+Total estimated model params size (MB): 94                                                                         
+Modules in train mode: 221                                                                                         
+Modules in eval mode: 0                                                                                            
+Total FLOPs: 0                                                                                                     
+
+Output()
+
+Metric val_f1_macro improved. New best score: 0.278
+Metric val_f1_macro improved by 0.046 >= min_delta = 0.002. New best score: 0.324
+Metric val_f1_macro improved by 0.113 >= min_delta = 0.002. New best score: 0.437
+Metric val_f1_macro improved by 0.059 >= min_delta = 0.002. New best score: 0.495
+Metric val_f1_macro improved by 0.043 >= min_delta = 0.002. New best score: 0.539
+Metric val_f1_macro improved by 0.053 >= min_delta = 0.002. New best score: 0.592
+Metric val_f1_macro improved by 0.007 >= min_delta = 0.002. New best score: 0.599
+Metric val_f1_macro improved by 0.019 >= min_delta = 0.002. New best score: 0.618
+Metric val_f1_macro improved by 0.005 >= min_delta = 0.002. New best score: 0.623
+Metric val_f1_macro improved by 0.026 >= min_delta = 0.002. New best score: 0.649
+Monitored metric val_f1_macro did not improve in the last 30 records. Best score: 0.649. Signaling Trainer to stop.
+
+Total training time: 21.04 minutes
+Training time: 21.044856731096903 min
+
