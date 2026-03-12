@@ -33,7 +33,6 @@ ICPR-Contest-2026/
 
 **Tasks:**  
 **1. Self-Supervised Learning with MoCo v2**  
-Notebook: `ssl_moco_py.ipynb`
 - Backbone: ResNet50
 - Technique: Momentum Contrast v2 (MoCo) with momentum encoder
 - Input: 12 Sentinel-2 bands (B1-B9, B8A, B11, B12)
@@ -41,7 +40,6 @@ Notebook: `ssl_moco_py.ipynb`
 - Memory Bank: 2048 negative samples
 
 **2. Downstream Classification with MoCo Encoder**   
-Notebook: `classification.ipynb`
 - Fine-tunes ResNet50 pre-trained with MoCo on labeled data
 - Input: 12 Sentinel-2 bands
 - Loss: Focal loss for class imbalance
